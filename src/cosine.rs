@@ -1,4 +1,7 @@
+#[cfg(feature = "ndarray_15")]
+use crate::ndarray_15_extra::Pow;
 use ndarray::{ArrayBase, Ix1};
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
 pub enum CosineSimilarityError {
     #[error(

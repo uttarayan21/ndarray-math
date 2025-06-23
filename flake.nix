@@ -132,6 +132,7 @@
                   stableToolchainWithRustAnalyzer
                   cargo-nextest
                   cargo-deny
+                  cargo-hack
                 ]
                 ++ (lib.optionals pkgs.stdenv.isDarwin [
                   apple-sdk_13

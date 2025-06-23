@@ -7,6 +7,10 @@ license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ndarray = "0.16"
+ndarray = { version = "0.16" }
+ndarray_15 = { package = "ndarray", version = "0.15.6", optional = true }
 num = "0.4.3"
 thiserror = "2.0.12"
+
+[features]
+ndarray_15 = ["dep:ndarray_15"]
