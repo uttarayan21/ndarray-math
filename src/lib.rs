@@ -4,3 +4,5 @@ pub mod ndarray_15_extra;
 
 mod cosine;
 pub use cosine::{CosineSimilarity, CosineSimilarityError};
+mod euclidean;
+pub use euclidean::{EuclideanDistance, EuclideanDistanceError};

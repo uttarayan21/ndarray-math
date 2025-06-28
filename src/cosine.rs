@@ -44,7 +44,7 @@ where
 }
 
 #[cfg(test)]
-mod cosine_tests {
+mod tests {
     use super::*;
     use ndarray::*;
 
