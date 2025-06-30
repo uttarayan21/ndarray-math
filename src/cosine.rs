@@ -52,15 +52,15 @@ where
     }
 }
 
-impl<S1, S2, T> CosineSimilarity<T, ArrayBase<S2, Ix1>> for &ArrayBase<S1, Ix1>
+impl<S1, S2, T> CosineSimilarity<T, &ArrayBase<S2, Ix1>> for ArrayBase<S1, Ix1>
 where
     S1: ndarray::Data<Elem = T>,
     S2: ndarray::Data<Elem = T>,
     T: num::traits::Float + 'static,
 {
     type Output = T;
-    fn cosine_similarity(&self, rhs: ArrayBase<S2, Ix1>) -> Result<T, CosineSimilarityError> {
-        (*self).cosine_similarity(rhs)
+    fn cosine_similarity(&self, rhs: &ArrayBase<S2, Ix1>) -> Result<T, CosineSimilarityError> {
+        self.cosine_similarity(rhs.view())
     }
 }
 
