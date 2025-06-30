@@ -13,3 +13,20 @@ where
         self.mapv(|x| x.powi(rhs))
     }
 }
+
+pub trait Sqrt {
+    type Output;
+    fn sqrt(&self) -> Self::Output;
+}
+
+impl<T, S, D> Sqrt for ndarray::ArrayBase<S, D>
+where
+    S: ndarray::Data<Elem = T>,
+    T: num::Float,
+    D: ndarray::Dimension,
+{
+    type Output = ndarray::Array<T, D>;
+    fn sqrt(&self) -> Self::Output {
+        self.mapv(|x| x.sqrt())
+    }
+}
