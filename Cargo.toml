@@ -14,3 +14,10 @@ thiserror = "2.0.12"
 
 [features]
 ndarray_15 = ["dep:ndarray_15"]
+
+[dev-dependencies]
+divan = "0.1.21"
+
+[[bench]]
+name = "benchmarks"
+harness = false

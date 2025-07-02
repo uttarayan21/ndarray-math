@@ -1,5 +1,5 @@
-// #[cfg(feature = "ndarray_15")]
-// use crate::ndarray_15_extra::*;
+#[cfg(feature = "ndarray_15")]
+use crate::ndarray_15_extra::*;
 use ndarray::{ArrayBase, Ix1};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
@@ -20,7 +20,7 @@ impl<S1, S2, T> EuclideanDistance<T, ArrayBase<S2, Ix1>> for ArrayBase<S1, Ix1>
 where
     S1: ndarray::Data<Elem = T>,
     S2: ndarray::Data<Elem = T>,
-    T: num::traits::Float + core::iter::Sum + 'static,
+    T: num::Float + core::iter::Sum + 'static + Copy,
 {
     fn euclidean_distance(&self, rhs: ArrayBase<S2, Ix1>) -> Result<T, EuclideanDistanceError> {
         if self.len() != rhs.len() {
@@ -37,15 +37,14 @@ where
             rhs.iter().all(|&x| x.is_finite()),
             "RHS vector contains non-finite values"
         );
-        // let numerator = self.dot(&rhs);
-        // let denominator = self.powi(2).sum().sqrt() * rhs.powi(2).sum().sqrt();
-        // Ok(numerator / denominator)
-        Ok(self
-            .iter()
-            .zip(rhs.iter())
-            .map(|(lhs, rhs)| (*lhs - *rhs).powi(2))
-            .sum::<T>()
-            .sqrt())
+        // Ok(self
+        //     .iter()
+        //     .zip(rhs.iter())
+        //     .map(|(lhs, rhs)| (*lhs - *rhs).powi(2))
+        //     .sum::<T>()
+        //     .sqrt())
+        use core::ops::Sub;
+        Ok(self.to_owned().sub(rhs).powi(2).sum().sqrt())
     }
 }
 
@@ -67,29 +66,4 @@ mod tests {
         let b = array![0.0, 1.0, 0.0];
         assert_eq!(a.euclidean_distance(b).unwrap(), 2.0_f64.sqrt());
     }
-
-    // #[test]
-    // fn test_invalid_vectors() {
-    //     let a = array![1.0, 2.0];
-    //     let b = array![1.0, 2.0, 3.0];
-    //     assert!(matches!(
-    //         a.euclidean_distance(b),
-    //         Err(EuclideanDistanceError::InvalidVectors { lhs: 2, rhs: 3 })
-    //     ));
-    // }
-    //
-    // #[test]
-    // fn test_zero_vector() {
-    //     let a = array![0.0, 0.0, 0.0];
-    //     let b = array![1.0, 2.0, 3.0];
-    //     let similarity = a.euclidean_distance(b);
-    //     assert!(similarity.is_ok_and(|item: f64| item.is_nan()));
-    // }
-    //
-    // #[test]
-    // fn test_different_ndarray_types() {
-    //     let a = array![1.0, 2.0, 3.0];
-    //     let b = array![1.0, 2.0, 3.0];
-    //     assert_eq!(a.euclidean_distance(b.view()).unwrap(), 1.0);
-    // }
 }
